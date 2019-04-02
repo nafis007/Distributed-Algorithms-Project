@@ -1,6 +1,10 @@
 package client;
 
 import java.awt.FileDialog;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -23,6 +27,8 @@ public class NotePadGUI extends javax.swing.JFrame {
      */
     
     String fileName;
+    Clipboard clipBoard = getToolkit().getSystemClipboard();
+    
     public NotePadGUI() {
         initComponents();
     }
@@ -37,8 +43,6 @@ public class NotePadGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        searchButton = new javax.swing.JButton();
-        searchField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         textArea = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -56,8 +60,6 @@ public class NotePadGUI extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(700, 700));
         setResizable(false);
 
-        searchButton.setText("search");
-
         textArea.setColumns(20);
         textArea.setRows(5);
         jScrollPane1.setViewportView(textArea);
@@ -66,20 +68,11 @@ public class NotePadGUI extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(searchField)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchButton))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(searchButton)
-                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
         );
 
         file.setText("File");
@@ -121,12 +114,27 @@ public class NotePadGUI extends javax.swing.JFrame {
         edit.setText("Edit");
 
         cutText.setText("Cut");
+        cutText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cutTextActionPerformed(evt);
+            }
+        });
         edit.add(cutText);
 
         copyText.setText("Copy");
+        copyText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyTextActionPerformed(evt);
+            }
+        });
         edit.add(copyText);
 
         pasteText.setText("Paste");
+        pasteText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasteTextActionPerformed(evt);
+            }
+        });
         edit.add(pasteText);
 
         jMenuBar1.add(edit);
@@ -210,6 +218,34 @@ public class NotePadGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_saveFileActionPerformed
 
+    private void cutTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutTextActionPerformed
+        // TODO add your handling code here:
+        String cutString = textArea.getSelectedText();
+        StringSelection cutSelection = new StringSelection(cutString);
+        clipBoard.setContents(cutSelection, cutSelection);
+        textArea.replaceRange("", textArea.getSelectionStart(), textArea.getSelectionEnd());
+    }//GEN-LAST:event_cutTextActionPerformed
+
+    private void copyTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyTextActionPerformed
+        // TODO add your handling code here:
+        String copyString = textArea.getSelectedText();
+        StringSelection copySelection = new StringSelection(copyString);
+        clipBoard.setContents(copySelection, copySelection);
+        
+    }//GEN-LAST:event_copyTextActionPerformed
+
+    private void pasteTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteTextActionPerformed
+        // TODO add your handling code here:
+        try{
+            Transferable pasteText = clipBoard.getContents(NotePadGUI.this);
+            String selectedText = (String) pasteText.getTransferData(DataFlavor.stringFlavor);
+            textArea.replaceRange(selectedText, textArea.getSelectionStart(), textArea.getSelectionEnd());
+            
+        } catch(Exception e){
+            System.out.println("Something went wrong!!");
+        }
+    }//GEN-LAST:event_pasteTextActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -258,8 +294,6 @@ public class NotePadGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem openFile;
     private javax.swing.JMenuItem pasteText;
     private javax.swing.JMenuItem saveFile;
-    private javax.swing.JButton searchButton;
-    private javax.swing.JTextField searchField;
     private javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 }
