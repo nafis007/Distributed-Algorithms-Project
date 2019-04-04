@@ -6,10 +6,14 @@
 
 package server;
 
+import javax.net.ssl.SSLException;
+
 /**
  *
  * @author NAFIS
  */
 public class Server {
-    
+	public static void main(String args[]) throws InterruptedException, SSLException {
+		Communication com = new Communication();
+	}
 }
