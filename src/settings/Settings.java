@@ -11,6 +11,8 @@ public class Settings {
 	public static final String CERT_PATH = "certificates/cert.pem";
 	public static final String PRIVATE_KEY_PATH = "certificates/key.pem";
 	
+	public static final String SERVER = "SERV";
+	
 	/** Return JSON object, or null if transformation was failed.
 	 * @param msg
 	 * @return
