@@ -39,13 +39,13 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
-        // Once session is secured, send a greeting and register the channel to the global channel
-        // list so the channel received the messages from others.
         ctx.pipeline().get(SslHandler.class).handshakeFuture().addListener(
                 new GenericFutureListener<Future<Channel>>() {
                     @Override
                     public void operationComplete(Future<Channel> future) throws Exception {
-                        ctx.writeAndFlush("You are now connected to " + InetAddress.getLocalHost().getHostName() + "\n");
+                        ctx.writeAndFlush(serverMessage("You are now connected to " + InetAddress.getLocalHost().getHostName()) + "\n");
+                        
+                        broadcast(ctx, serverMessage("A new client has joined.") + "\n");
                         channels.add(ctx.channel());
                     }
         });
@@ -65,17 +65,25 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
         ctx.close();
     }
     
-    private void sendToAll(ChannelHandlerContext ctx, String msgToOthers, String msgToEcho) {
+    @SuppressWarnings("unchecked")
+	private String serverMessage(String msg) {
+    	JSONObject obj = new JSONObject();
+		obj.put(Settings.SERVER, msg);
+		return obj.toJSONString();
+    }
+    
+    private void broadcast(ChannelHandlerContext ctx, String msgToOthers) {
+    	broadcast(ctx, msgToOthers, null);
+    }
+    
+    private void broadcast(ChannelHandlerContext ctx, String msgToOthers, String msgToEcho) {
     	for (Channel c: channels) {
             if (c != ctx.channel()) {
-//                c.writeAndFlush("[" + ctx.channel().remoteAddress() + "] " + msg + '\n');
                 c.writeAndFlush(msgToOthers + '\n');
             } else {
-//                c.writeAndFlush("[you] " + msg + '\n');
             	if (msgToEcho!=null) {
             		c.writeAndFlush(msgToEcho + '\n');
             	}
-            	
             }
         }
     }
