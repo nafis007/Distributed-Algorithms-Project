@@ -16,14 +16,14 @@ public class Client {
 //        guiObject.setVisible(true);
 //        guiObject.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       
-      
-        DocTree tree = new DocTree();
-        tree.addSymbol('b', 1);
-        tree.addSymbol('c', 2);
-        tree.addSymbol('d', 100);
-        tree.addSymbol('a', 0);
+        Crdt data = new Crdt();
+//        data.update(OperationType.insert, 'b', 1);
+//        data.update(OperationType.insert, 'c', 2);
+//        data.update(OperationType.insert, 'd', 100);
+//        data.update(OperationType.insert, 'a', 0);
 
-        System.out.println(tree.toString());
+        data.updateEditor();
+
     }
     public void connectTo(String host, int port) {
     	comm = new Communication(host, port);

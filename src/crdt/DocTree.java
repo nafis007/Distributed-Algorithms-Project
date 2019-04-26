@@ -25,7 +25,7 @@ public class DocTree implements ITree {
         return null;
     }
 
-    private ArrayList<INode> traverseTreeUntilPosition(int position) {
+    public ArrayList<INode> traverseTreeUntilPosition(int position) {
         ArrayList<INode> nodes = new ArrayList();
         inorderTraverse(root, new P(position), nodes);
         return nodes;
@@ -54,7 +54,7 @@ public class DocTree implements ITree {
 
     @Override
     public INode addSymbol(char symbol, int position) {
-        DocElement el = new DocElement(symbol, null);
+        DocElement el = new DocElement(symbol);
         DocNode newNode = new DocNode(el);
 
         if (root == null) {
@@ -73,7 +73,7 @@ public class DocTree implements ITree {
             node.setRightChild(newNode);
         }
         else {
-            INode leaf = findLeftLeaf(node);
+            INode leaf = findLeftLeaf(node.getRightChild());
             leaf.setLeftChild(newNode);
         }
         return newNode;
