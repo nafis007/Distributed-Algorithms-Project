@@ -11,9 +11,10 @@ import io.netty.handler.logging.LoggingHandler;
 import settings.Settings;
 
 public class Communication {
-	static final int PORT = Integer.parseInt(System.getProperty("port", Settings.OUT_PORT));
+	static int port;
 	
-	public Communication() throws InterruptedException, SSLException {
+	public Communication(int pt) throws InterruptedException, SSLException {
+		port = pt;
 		EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -23,7 +24,7 @@ public class Communication {
              .handler(new LoggingHandler(LogLevel.INFO))
              .childHandler(new ServerInitializer());
 
-            b.bind(PORT).sync().channel().closeFuture().sync();
+            b.bind(port).sync().channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
