@@ -6,7 +6,6 @@ import org.json.simple.parser.ParseException;
 
 
 public class Settings {
-	public static final String SERVER_ADDRESS = "127.0.0.1";
 	public static final String OUT_PORT = "8888";
 	public static final String CERT_PATH = "certificates/cert.pem";
 	public static final String PRIVATE_KEY_PATH = "certificates/key.pem";

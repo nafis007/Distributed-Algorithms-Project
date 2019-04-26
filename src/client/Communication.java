@@ -8,17 +8,19 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import settings.Settings;
 
 public class Communication {
-	static final String HOST = System.getProperty("host", Settings.SERVER_ADDRESS);
-    static final int PORT = Integer.parseInt(System.getProperty("port", Settings.OUT_PORT));
+	static String host;// = System.getProperty("host", Settings.SERVER_ADDRESS);
+    static int port;// = Integer.parseInt(System.getProperty("port", Settings.OUT_PORT));
 	static EventLoopGroup group = new NioEventLoopGroup();
-	public Communication() {
+	public Communication(String host, int port) {
+		Communication.host = host;
+		Communication.port = port;
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
              .channel(NioSocketChannel.class)
              .handler(new ClientInitializer());
             // Start the connection attempt.
-            Channel ch = b.connect(HOST, PORT).sync().channel();
+            Channel ch = b.connect(Communication.host, Communication.port).sync().channel();
         } catch (Exception e) {
         	
         }finally {

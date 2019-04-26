@@ -6,19 +6,17 @@ import crdt.*;
 
 public class Client {
 
-    public static void main(String args[]) {
+	Communication comm;
+	
+    public Client() {
 //        NotePadGUI guiObject = new NotePadGUI();
 //        guiObject.setBounds(0, 0, 700, 700);
 //        guiObject.setTitle("Notepad");
 //        guiObject.setResizable(false);
 //        guiObject.setVisible(true);
 //        guiObject.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-
-
-
-
-
+      
+      
         DocTree tree = new DocTree();
         tree.addSymbol('b', 1);
         tree.addSymbol('c', 2);
@@ -26,5 +24,11 @@ public class Client {
         tree.addSymbol('a', 0);
 
         System.out.println(tree.toString());
+    }
+    public void connectTo(String host, int port) {
+    	comm = new Communication(host, port);
+    }
+    public void connectTo(String host, String port) {
+    	comm = new Communication(host, Integer.parseInt(port));
     }
 }

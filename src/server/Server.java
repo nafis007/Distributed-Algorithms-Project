@@ -12,8 +12,20 @@ import javax.net.ssl.SSLException;
  *
  * @author NAFIS
  */
-public class Server {
-	public static void main(String args[]) throws InterruptedException, SSLException {
-		Communication com = new Communication();
+public class Server extends Thread{
+	private int port;
+	
+	public Server(int port) {
+		this.port = port;
+	}
+	
+	public void run() {
+		try {
+			Communication com = new Communication(port);
+		} catch (SSLException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Server Starts.");
 	}
 }

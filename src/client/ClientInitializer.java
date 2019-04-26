@@ -31,7 +31,7 @@ public class ClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     public void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        pipeline.addLast(sslCtx.newHandler(ch.alloc(), Communication.HOST, Communication.PORT));
+        pipeline.addLast(sslCtx.newHandler(ch.alloc(), Communication.host, Communication.port));
         pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
         pipeline.addLast(new StringDecoder());
         pipeline.addLast(new StringEncoder());
