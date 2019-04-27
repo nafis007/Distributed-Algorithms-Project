@@ -9,35 +9,6 @@ public class Crdt implements ICrdt {
 
     public Crdt() {
         doc = new DocTree();
-
-//        doc.addSymbol('b', 1);
-//        doc.addSymbol('c', 2);
-//        doc.addSymbol('d', 3);
-//        doc.addSymbol('a', 0);
-//        doc.addSymbol('f', 1);
-//        doc.addSymbol('m', 3);
-//
-//        ArrayList<INode> nodes = doc.traverseTreeUntilPosition(-1);
-//
-//        for (INode node : nodes) {
-//            DocElement element = (DocElement)node.getElement();
-//            System.out.println(element.getValue());
-//
-//            TreePath path =  element.getPath();
-//
-//            if (path != null) {
-//                System.out.println(path.length());
-//
-//                Direction s = path.getNextStep();
-//                while (s != null) {
-//                    System.out.println(s);
-//                    s = path.getNextStep();
-//                }
-//            }
-//
-//        }
-
-
     }
 
     @Override
