@@ -76,8 +76,6 @@ public class NotePadGUI extends javax.swing.JFrame {
         textArea.setRows(5);
         jScrollPane1.setViewportView(textArea);
 
-
-
         textArea.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -91,7 +89,7 @@ public class NotePadGUI extends javax.swing.JFrame {
             public void insertUpdate(DocumentEvent e) {
                 try {
                     String insertedText = e.getDocument().getText(e.getOffset(),e.getLength());
-                    System.out.println("inserted "+insertedText+" at "+e.getOffset());
+                    System.out.println("inserting "+insertedText+" from "+e.getOffset());
                     multipleInsert(insertedText,e.getOffset());
                 } catch (BadLocationException ex) {
                     ex.printStackTrace();
@@ -101,8 +99,8 @@ public class NotePadGUI extends javax.swing.JFrame {
             @Override
             public void removeUpdate(DocumentEvent e) {
                 String removedText = previousText.substring(e.getOffset(), e.getOffset() + e.getLength());
-                System.out.println("removed "+removedText+" at "+e.getOffset());
-                multipleDelete(removedText,e.getOffset());
+                System.out.println("removing "+removedText+" from "+e.getOffset());
+                multipleDelete(removedText,e.getOffset()+1);
             }
 
             @Override
