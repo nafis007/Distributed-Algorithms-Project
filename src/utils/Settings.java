@@ -1,4 +1,4 @@
-package settings;
+package utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -73,7 +73,7 @@ public class Settings {
 	 * @param buf
 	 * @return
 	 */
-	public byte[] getByteFromBuf(ByteBuf buf) {
+	public static byte[] getByteFromBuf(ByteBuf buf) {
 		int size = buf.readableBytes();
 		byte[] bytes = new byte[size];
 		buf.readBytes(bytes);

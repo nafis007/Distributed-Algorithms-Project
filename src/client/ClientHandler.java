@@ -1,28 +1,25 @@
 package client;
 
-import org.json.simple.JSONObject;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-import settings.Settings;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import utils.Request;
 
 
 /**
  * Handles a client-side channel.
  */
-public class ClientHandler extends SimpleChannelInboundHandler<String> {
+public class ClientHandler extends ChannelInboundHandlerAdapter {
 	
-    @Override
-    public void channelRead0(ChannelHandlerContext ctx, String msg){
-        System.err.println(msg);
-    	JSONObject content = Settings.stringToJson(msg);
-        if (content!=null) {
-			
-		}
+	@Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg){
+    	System.out.println("Client received msg!");
+    	Request m = (Request) msg;
+        System.out.println(m.getSuperR().getRequest());
     }
     
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
-    	
+    	System.out.println("Client Channel active!");
     }
     
     @Override
@@ -34,6 +31,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
         ctx.close();
+    }
+    
+    public static void sentToServer(Object obj) {
+    	
     }
     
 }

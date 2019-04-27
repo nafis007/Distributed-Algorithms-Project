@@ -15,76 +15,42 @@
  */
 package server;
 
-import java.net.InetAddress;
-
-import org.json.simple.JSONObject;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.handler.ssl.SslHandler;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
+
 import io.netty.util.concurrent.GlobalEventExecutor;
-import settings.Settings;
+import utils.Request;
 
 /**
  * Handles a server-side channel.
  */
-public class ServerHandler extends SimpleChannelInboundHandler<String> {
+public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
-        ctx.pipeline().get(SslHandler.class).handshakeFuture().addListener(
-                new GenericFutureListener<Future<Channel>>() {
-                    @Override
-                    public void operationComplete(Future<Channel> future) throws Exception {
-                        ctx.writeAndFlush(serverMessage("You are now connected to " + InetAddress.getLocalHost().getHostName()) + "\n");
-                        
-                        broadcast(ctx, serverMessage("A new client has joined.") + "\n");
-                        channels.add(ctx.channel());
-                    }
-        });
+    	channels.add(ctx.channel());
+    	System.out.println("Channel active!");
+        Request a = new Request();
+        Request b = new Request();
+    	a.setRequest("1231");
+    	b.setSuperR(a);
+    	ctx.writeAndFlush(b);
+        System.out.println("Channel sent!");
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-    	JSONObject content = Settings.stringToJson(msg);
-        if (content!=null) {
-			
-		}
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    	
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
         ctx.close();
-    }
-    
-    @SuppressWarnings("unchecked")
-	private String serverMessage(String msg) {
-    	JSONObject obj = new JSONObject();
-		obj.put(Settings.SERVER, msg);
-		return obj.toJSONString();
-    }
-    
-    private void broadcast(ChannelHandlerContext ctx, String msgToOthers) {
-    	broadcast(ctx, msgToOthers, null);
-    }
-    
-    private void broadcast(ChannelHandlerContext ctx, String msgToOthers, String msgToEcho) {
-    	for (Channel c: channels) {
-            if (c != ctx.channel()) {
-                c.writeAndFlush(msgToOthers + '\n');
-            } else {
-            	if (msgToEcho!=null) {
-            		c.writeAndFlush(msgToEcho + '\n');
-            	}
-            }
-        }
     }
 }

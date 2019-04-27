@@ -5,12 +5,13 @@ import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import settings.Settings;
+import utils.Settings;
 
 public class Communication {
 	static String host;// = System.getProperty("host", Settings.SERVER_ADDRESS);
     static int port;// = Integer.parseInt(System.getProperty("port", Settings.OUT_PORT));
 	static EventLoopGroup group = new NioEventLoopGroup();
+	private Channel ch;
 	public Communication(String host, int port) {
 		Communication.host = host;
 		Communication.port = port;
@@ -20,7 +21,7 @@ public class Communication {
              .channel(NioSocketChannel.class)
              .handler(new ClientInitializer());
             // Start the connection attempt.
-            Channel ch = b.connect(Communication.host, Communication.port).sync().channel();
+            ch = b.connect(Communication.host, Communication.port).sync().channel();
         } catch (Exception e) {
         	
         }finally {
@@ -28,4 +29,9 @@ public class Communication {
 //            group.shutdownGracefully();
         }
 	}
+	public Channel getChannel() {
+		return ch;
+	}
+	
+	
 }
