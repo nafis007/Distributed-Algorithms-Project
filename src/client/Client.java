@@ -3,6 +3,7 @@ package client;
 import javax.swing.JFrame;
 
 import crdt.*;
+import tests.CrdtTests;
 
 public class Client {
 
@@ -22,10 +23,16 @@ public class Client {
 //        data.update(OperationType.insert, 'd', 100);
 //        data.update(OperationType.insert, 'a', 0);
 //
-//        data.update(OperationType.remove, 'c', 3);
+//        data.update(OperationType.remove, 'a', 0);
 
-        data.updateEditor();
 
+//        data.updateEditor();
+
+//        CrdtTests.testCrdtGetNodeByPath();
+//        CrdtTests.testCrdtGetNodeByPath_1();
+        CrdtTests.testCrdtAddNodeByPath();
+        CrdtTests.testCrdtAddNodeByPath_1();
+        CrdtTests.testCrdtAddNodeByPath_2();
     }
     public void connectTo(String host, int port) {
     	comm = new Communication(host, port);

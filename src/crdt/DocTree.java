@@ -13,19 +13,67 @@ class P {
     }
 }
 
+class SearchResult {
+    INode node;
+    INode parent;
+    Direction direction;
+}
+
 public class DocTree implements ITree {
     DocNode root;
 
 
-    private INode createNode() {
-        return null;
+    public INode addNode(DocElement element) throws Exception {
+        SearchResult res = searchNode(element.getPath());
+        if (res.node == null) {
+            return createNode(element, res.parent, res.direction);
+        } else {
+            throw new Exception("There is a conflict");
+            //ToDo: solveConflict();
+        }
     }
 
-    private INode getNode(TreePath path) {
-        return null;
+    private SearchResult searchNode(TreePath path) throws Exception {
+        if (path == null) {
+            throw new IllegalArgumentException();
+        }
+
+        SearchResult res = new SearchResult();
+        res.node = root;
+        Direction d = path.getNextStep();
+        while (d != null) {
+            if (res.node == null) {
+                throw new Exception("Path can't be reached");
+            }
+            res.direction = d;
+            res.parent = res.node;
+            if (d == Direction.right) {
+                res.node = res.node.getRightChild();
+            } else if (d == Direction.left) {
+                res.node = res.node.getLeftChild();
+            }
+            d = path.getNextStep();
+        }
+        return res;
     }
 
-    public ArrayList<INode> traverseTreeUntilPosition(int position) {
+    private INode createNode(DocElement element, INode parent, Direction direction) {
+        DocNode node = new DocNode(element);
+        if (direction == null) {
+            root = node;
+        } else if (direction == Direction.right) {
+            parent.setRightChild(node);
+        } else if (direction == Direction.left) {
+            parent.setRightChild(node);
+        }
+        return node;
+    }
+
+    public INode getNode(TreePath path) throws Exception {
+        return searchNode(path).node;
+    }
+
+    private ArrayList<INode> traverseTreeUntilPosition(int position) {
         ArrayList<INode> nodes = new ArrayList();
         inorderTraverse(root, new P(position), nodes);
         return nodes;
@@ -94,6 +142,10 @@ public class DocTree implements ITree {
 
     @Override
     public INode removeSymbol(char symbol, int position) throws Exception {
+        if (position == 0)
+        {
+            return null;
+        }
         INode node = getNode(position);
         IElement el = node.getElement();
         if (el.getValue() != symbol) {
