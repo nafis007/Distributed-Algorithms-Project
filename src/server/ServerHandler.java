@@ -35,12 +35,12 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(final ChannelHandlerContext ctx) {
     	channels.add(ctx.channel());
     	System.out.println("Channel active!");
-        Request a = new Request();
-        Request b = new Request();
-    	a.setRequest("1231");
-    	b.setSuperR(a);
-    	ctx.writeAndFlush(b);
-        System.out.println("Channel sent!");
+//        Request a = new Request();
+//        Request b = new Request();
+//    	a.setRequest("1231");
+//    	b.setSuperR(a);
+//    	ctx.writeAndFlush(b);
+//        System.out.println("Channel sent!");
     }
 
     @Override

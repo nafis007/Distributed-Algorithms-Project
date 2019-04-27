@@ -13,8 +13,8 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 	@Override
     public void channelRead(ChannelHandlerContext ctx, Object msg){
     	System.out.println("Client received msg!");
-    	Request m = (Request) msg;
-        System.out.println(m.getSuperR().getRequest());
+//    	Request m = (Request) msg;
+//        System.out.println(m.getSuperR().getRequest());
     }
     
     @Override
