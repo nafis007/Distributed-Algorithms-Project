@@ -27,7 +27,7 @@ import java.io.IOException;
 
 /**
  *
- * @author NAFIS
+ * @author NAFIS, ALLEN
  */
 
 public class NotePadGUI extends javax.swing.JFrame {
@@ -273,7 +273,6 @@ public class NotePadGUI extends javax.swing.JFrame {
             char ch = stringToBeInserted.charAt(i);
             data.update(OperationType.insert,ch,initPosition+i);
         }
-        data.updateEditor();
     }
 
     /**
@@ -285,7 +284,15 @@ public class NotePadGUI extends javax.swing.JFrame {
             char ch = stringToBeDeleted.charAt(i);
             data.update(OperationType.remove,ch,initPosition);
         }
-        data.updateEditor();
+    }
+
+    /**
+     * It should be called by the controller to update the GUI, the data should be provided
+     * The input it requires is the whole string
+     * @param str
+     */
+    public static void updateEditor(String str){
+        textArea.setText(str);
     }
 
     /**
@@ -318,6 +325,6 @@ public class NotePadGUI extends javax.swing.JFrame {
         });
     }
 
-    private javax.swing.JTextArea textArea;
+    private static javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 }

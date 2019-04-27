@@ -1,5 +1,7 @@
 package crdt;
 
+import client.NotePadGUI;
+
 import java.util.ArrayList;
 
 public class Crdt implements ICrdt {
@@ -59,6 +61,7 @@ public class Crdt implements ICrdt {
 
     @Override
     public void updateEditor() {
-        System.out.println(doc.toString());
+        NotePadGUI.updateEditor(doc.toString());
+//        System.out.println(doc.toString());
     }
 }
