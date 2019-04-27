@@ -2,8 +2,11 @@ package crdt;
 
 public interface INode {
     INode getLeftChild();
-    void setLeftChild(INode leftChild);
+    void setLeftChild(INode node);
     INode getRightChild();
-    void setRightChild(INode rightChild);
+    void setRightChild(INode node);
+    void setParent(INode node);
     IElement getElement();
+    void remove();
+    boolean isRemoved();
 }

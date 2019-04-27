@@ -13,16 +13,64 @@ class P {
     }
 }
 
+class SearchResult {
+    INode node;
+    INode parent;
+    Direction direction;
+}
+
 public class DocTree implements ITree {
     DocNode root;
 
 
-    private INode createNode() {
-        return null;
+    public INode addNode(DocElement element) throws Exception {
+        SearchResult res = searchNode(element.getPath());
+        if (res.node == null) {
+            return createNode(element, res.parent, res.direction);
+        } else {
+            throw new Exception("There is a conflict");
+            //ToDo: solveConflict();
+        }
     }
 
-    private INode getNode(TreePath path) {
-        return null;
+    private SearchResult searchNode(TreePath path) throws Exception {
+        if (path == null) {
+            throw new IllegalArgumentException();
+        }
+
+        SearchResult res = new SearchResult();
+        res.node = root;
+        Direction d = path.getNextStep();
+        while (d != null) {
+            if (res.node == null) {
+                throw new Exception("Path can't be reached");
+            }
+            res.direction = d;
+            res.parent = res.node;
+            if (d == Direction.right) {
+                res.node = res.node.getRightChild();
+            } else if (d == Direction.left) {
+                res.node = res.node.getLeftChild();
+            }
+            d = path.getNextStep();
+        }
+        return res;
+    }
+
+    private INode createNode(DocElement element, INode parent, Direction direction) {
+        DocNode node = new DocNode(element);
+        if (direction == null) {
+            root = node;
+        } else if (direction == Direction.right) {
+            parent.setRightChild(node);
+        } else if (direction == Direction.left) {
+            parent.setRightChild(node);
+        }
+        return node;
+    }
+
+    public INode getNode(TreePath path) throws Exception {
+        return searchNode(path).node;
     }
 
     private ArrayList<INode> traverseTreeUntilPosition(int position) {
@@ -45,8 +93,10 @@ public class DocTree implements ITree {
             if (positions.current == positions.stop) {
                 return true;
             }
-            result.add(root);
-            positions.current++;
+            if (!root.isRemoved()) {
+                result.add(root);
+                positions.current++;
+            }
             return inorderTraverse(root.getRightChild(), positions, result);
         }
         return false;
@@ -54,7 +104,7 @@ public class DocTree implements ITree {
 
     @Override
     public INode addSymbol(char symbol, int position) {
-        DocElement el = new DocElement(symbol, null);
+        DocElement el = new DocElement(symbol);
         DocNode newNode = new DocNode(el);
 
         if (root == null) {
@@ -73,7 +123,7 @@ public class DocTree implements ITree {
             node.setRightChild(newNode);
         }
         else {
-            INode leaf = findLeftLeaf(node);
+            INode leaf = findLeftLeaf(node.getRightChild());
             leaf.setLeftChild(newNode);
         }
         return newNode;
@@ -91,10 +141,19 @@ public class DocTree implements ITree {
     }
 
     @Override
-    public INode removeSymbol(char a, int position) {
-        return null;
+    public INode removeSymbol(char symbol, int position) throws Exception {
+        if (position == 0)
+        {
+            return null;
+        }
+        INode node = getNode(position);
+        IElement el = node.getElement();
+        if (el.getValue() != symbol) {
+            throw new Exception(String.format("Symbols '%s' and '%s' don't match", symbol, el.getValue()));
+        }
+        node.remove();
+        return node;
     }
-
 
     private void removeNode(INode node) {
 
