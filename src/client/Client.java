@@ -1,7 +1,5 @@
 package client;
 
-import javax.swing.JFrame;
-
 import crdt.*;
 
 public class Client {
@@ -9,7 +7,7 @@ public class Client {
 	Communication comm;
 	
     public Client() {
-//        NotePadGUI guiObject = new NotePadGUI();
+
 //        guiObject.setBounds(0, 0, 700, 700);
 //        guiObject.setTitle("Notepad");
 //        guiObject.setResizable(false);
@@ -17,6 +15,7 @@ public class Client {
 //        guiObject.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       
         Crdt data = new Crdt();
+        NotePadGUI.init(data);
 //        data.update(OperationType.insert, 'b', 1);
 //        data.update(OperationType.insert, 'c', 2);
 //        data.update(OperationType.insert, 'd', 100);
