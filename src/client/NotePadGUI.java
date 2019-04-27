@@ -285,7 +285,7 @@ public class NotePadGUI extends javax.swing.JFrame {
     private void multipleDelete(String stringToBeDeleted, int initPosition){
         for(int i = 0 ; i < stringToBeDeleted.length() ; i++){
             char ch = stringToBeDeleted.charAt(i);
-            data.update(OperationType.insert,ch,initPosition);
+            data.update(OperationType.remove,ch,initPosition);
         }
         data.updateEditor();
     }
