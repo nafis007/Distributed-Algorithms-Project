@@ -6,7 +6,7 @@ import crdt.*;
 
 public class Client {
 
-	Communication comm;
+	static Communication comm;
 	
     public Client() {
 //        NotePadGUI guiObject = new NotePadGUI();
@@ -31,4 +31,7 @@ public class Client {
     public void connectTo(String host, String port) {
     	comm = new Communication(host, Integer.parseInt(port));
     }
+	public static void sentToServer(Object obj) {
+		comm.getChannel().writeAndFlush(obj);
+	}
 }

@@ -8,12 +8,16 @@ package server;
 
 import javax.net.ssl.SSLException;
 
+import io.netty.channel.Channel;
+import io.netty.channel.group.ChannelGroup;
+
 /**
  *
  * @author NAFIS
  */
 public class Server extends Thread{
 	private int port;
+	private Communication com;
 	
 	public Server(int port) {
 		this.port = port;
@@ -21,11 +25,18 @@ public class Server extends Thread{
 	
 	public void run() {
 		try {
-			Communication com = new Communication(port);
+			com = new Communication(port);
 		} catch (SSLException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("Server Starts.");
 	}
+	
+    public static void broadcastToClients(Object obj) {
+    	ChannelGroup channels = ServerHandler.channels;
+    	for (Channel c: channels) {
+    		c.writeAndFlush(obj);
+    	}
+    }
 }

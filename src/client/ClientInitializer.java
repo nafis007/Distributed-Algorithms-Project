@@ -9,11 +9,11 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import settings.Settings;
+import utils.Decoder;
+import utils.Encoder;
+import utils.Settings;
 
 /**
  * Creates a newly configured {@link ChannelPipeline} for a new channel.
@@ -32,9 +32,9 @@ public class ClientInitializer extends ChannelInitializer<SocketChannel> {
     public void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
         pipeline.addLast(sslCtx.newHandler(ch.alloc(), Communication.host, Communication.port));
-        pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
-        pipeline.addLast(new StringDecoder());
-        pipeline.addLast(new StringEncoder());
+//        pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+        pipeline.addLast(new Decoder());
+        pipeline.addLast(new Encoder());
 
         // and then business logic.
         pipeline.addLast(new ClientHandler());
