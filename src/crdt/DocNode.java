@@ -6,9 +6,11 @@ public class DocNode implements INode {
     private DocNode leftChild;
     private DocNode rightChild;
     private DocNode parent;
+    private boolean isRemoved;
 
     public DocNode(DocElement element) {
         this.element = element;
+        isRemoved = false;
     }
 
     @Override
@@ -59,5 +61,15 @@ public class DocNode implements INode {
                 path.addStep(Direction.left);
             }
         }
+    }
+
+    @Override
+    public void remove() {
+        isRemoved = true;
+    }
+
+    @Override
+    public boolean isRemoved() {
+        return isRemoved;
     }
 }

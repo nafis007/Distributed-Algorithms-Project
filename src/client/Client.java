@@ -20,6 +20,8 @@ public class Client {
 //        data.update(OperationType.insert, 'c', 2);
 //        data.update(OperationType.insert, 'd', 100);
 //        data.update(OperationType.insert, 'a', 0);
+//
+//        data.update(OperationType.remove, 'c', 3);
 
         data.updateEditor();
 
