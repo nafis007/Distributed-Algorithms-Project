@@ -45,8 +45,10 @@ public class DocTree implements ITree {
             if (positions.current == positions.stop) {
                 return true;
             }
-            result.add(root);
-            positions.current++;
+            if (!root.isRemoved()) {
+                result.add(root);
+                positions.current++;
+            }
             return inorderTraverse(root.getRightChild(), positions, result);
         }
         return false;
@@ -91,10 +93,15 @@ public class DocTree implements ITree {
     }
 
     @Override
-    public INode removeSymbol(char a, int position) {
-        return null;
+    public INode removeSymbol(char symbol, int position) throws Exception {
+        INode node = getNode(position);
+        IElement el = node.getElement();
+        if (el.getValue() != symbol) {
+            throw new Exception(String.format("Symbols '%s' and '%s' don't match", symbol, el.getValue()));
+        }
+        node.remove();
+        return node;
     }
-
 
     private void removeNode(INode node) {
 

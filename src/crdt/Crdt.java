@@ -44,7 +44,11 @@ public class Crdt implements ICrdt {
             doc.addSymbol(symbol, position);
         }
         if (operation == OperationType.remove) {
-
+            try {
+                doc.removeSymbol(symbol, position);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
