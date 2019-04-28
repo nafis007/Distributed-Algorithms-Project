@@ -11,6 +11,9 @@ public class Crdt implements ICrdt {
         doc = new DocTree();
     }
 
+    /**
+     * Method update() is used to update DocTree by Editor
+     * */
     @Override
     public void update(OperationType operation, char symbol, int position) {
         if (operation == OperationType.insert) {
@@ -23,6 +26,22 @@ public class Crdt implements ICrdt {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Method sync() is used to update local DocTree by messages from remote peers
+     * Only insert operation yet
+     * */
+    @Override
+    public void sync(Operation operation) {
+        if (operation.getType() == OperationType.insert) {
+            try {
+                doc.addNode(operation.getElement());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        //ToDo: Add remove operation
     }
 
     @Override
