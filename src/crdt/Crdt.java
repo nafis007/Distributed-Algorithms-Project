@@ -56,7 +56,6 @@ public class Crdt implements ICrdt {
 
     /**
      * Method sync() is used to update local DocTree by messages from remote peers
-     * Only insert operation yet
      * */
     @Override
     public void sync(Operation operation) {
@@ -66,12 +65,18 @@ public class Crdt implements ICrdt {
         if (operation.getType() == OperationType.insert) {
             try {
                 doc.addNode(operation.getElement());
-                updateEditor();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        //ToDo: Add remove operation
+        if (operation.getType() == OperationType.remove) {
+            try {
+                doc.removeNode(operation.getElement());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        updateEditor();
     }
 
     @Override
