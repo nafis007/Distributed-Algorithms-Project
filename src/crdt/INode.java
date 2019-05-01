@@ -9,4 +9,5 @@ public interface INode {
     IElement getElement();
     void remove();
     boolean isRemoved();
+    boolean isEmpty();
 }

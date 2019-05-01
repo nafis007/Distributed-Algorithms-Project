@@ -8,6 +8,10 @@ public class DocNode implements INode {
     private DocNode parent;
     private boolean isRemoved;
 
+    public DocNode() {
+        this(null);
+    }
+
     public DocNode(DocElement element) {
         this.element = element;
         isRemoved = false;
@@ -71,5 +75,12 @@ public class DocNode implements INode {
     @Override
     public boolean isRemoved() {
         return isRemoved;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        if (element == null)
+            return true;
+        return false;
     }
 }
