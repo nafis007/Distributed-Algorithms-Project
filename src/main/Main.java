@@ -8,8 +8,19 @@ public class Main {
 	private static Server server;
 	
 	public static void main(String[] args) {
-		establishConnections(8888);
-		
+		processArgs(args);
+	}
+	
+	private static void processArgs(String[] args) {
+		// args[0] = server port, default = 8888
+		int port;
+		if (args.length==0) {
+			port = 8888;
+		}else {
+			port = Integer.parseInt(args[0]);
+		}
+		System.err.println("Server starts at port " + port);
+		establishConnections(port);
 	}
 	
 	/**
