@@ -18,20 +18,7 @@ public class Client {
 //        guiObject.setVisible(true);
 //        guiObject.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        ICommunicationManager communicationManager = new ICommunicationManager() {
-            @Override
-            public void broadcastMessage(Operation o) {
 
-            }
-
-            @Override
-            public void handleIncomingMessage(IMessageHandler messageHandler) {
-                messageHandler.handle(null);
-            }
-        }; //ToDO: It is just a stub. Remove it after proper implementation. It shouldn't be in the client class.
-
-        Crdt data = new Crdt(communicationManager); //ToDo: It shouldn't be in the client. Move to main
-        NotePadGUI.init(data);
 
 //        CrdtTests.testCrdtGetNodeByPath();
 //        CrdtTests.testCrdtGetNodeByPath_1();
