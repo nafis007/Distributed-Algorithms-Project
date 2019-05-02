@@ -24,6 +24,8 @@ public class Client {
 //        CrdtTests.testCrdtAddNodeByPath();
 //        CrdtTests.testCrdtAddNodeByPath_1();
 //        CrdtTests.testCrdtAddNodeByPath_2();
+//        CrdtTests.testCrdtRemoteDelete();
+//        CrdtTests.testCrdtRemoteDeleteAdd();
     }
     
     public void connectTo(String host, int port) {
