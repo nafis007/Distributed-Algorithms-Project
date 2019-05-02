@@ -39,7 +39,7 @@ public class Client {
 //        CrdtTests.testCrdtAddNodeByPath_1();
 //        CrdtTests.testCrdtAddNodeByPath_2();
 //        CrdtTests.testCrdtRemoteDelete();
-        CrdtTests.testCrdtRemoteDeleteAdd();
+//        CrdtTests.testCrdtRemoteDeleteAdd();
     }
     public void connectTo(String host, int port) {
     	comm = new Communication(host, port);
