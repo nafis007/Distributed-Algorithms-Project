@@ -1,18 +1,3 @@
-/*
- * Copyright 2012 The Netty Project
- *
- * The Netty Project licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
 package server;
 
 import io.netty.channel.Channel;
@@ -22,7 +7,8 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 
 import io.netty.util.concurrent.GlobalEventExecutor;
-import utils.Request;
+import main.ConnectionInfo;
+import main.Main;
 
 /**
  * Handles a server-side channel.
@@ -33,23 +19,32 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
+    	// when a client is connected, add to channel 
+    	// group and print in the GUI
     	channels.add(ctx.channel());
-    	System.out.println("Channel active!");
-//        Request a = new Request();
-//        Request b = new Request();
-//    	a.setRequest("1231");
-//    	b.setSuperR(a);
-//    	ctx.writeAndFlush(b);
-//        System.out.println("Channel sent!");
+    	ConnectionInfo.getInstance().addClientConnection(ctx.channel().remoteAddress().toString());
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-    	
+    	// when received a message from a client, redirect
+    	// to all other peers and run the message
+    	for (Channel c: channels) {
+    		// first send to all connected clients (children)
+    		if (c != ctx.channel()) {
+    			// make sure don't send back to the client
+    			c.writeAndFlush(msg);
+    		}
+    	}
+    	// then send to the server (parent)
+    	Main.getClient().sentToServer(msg);
+    	// run the action
+    	Main.getServer().receiveAction(msg);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+    	ConnectionInfo.getInstance().delClientConnection(ctx.channel().remoteAddress().toString());
         cause.printStackTrace();
         ctx.close();
     }

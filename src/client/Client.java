@@ -6,10 +6,9 @@ import tests.CrdtTests;
 
 public class Client {
 
-	static Communication comm;
 
-
-
+	private Communication comm;
+	
     public Client() {
 
 //        guiObject.setBounds(0, 0, 700, 700);
@@ -26,13 +25,22 @@ public class Client {
 //        CrdtTests.testCrdtAddNodeByPath_1();
 //        CrdtTests.testCrdtAddNodeByPath_2();
     }
+    
     public void connectTo(String host, int port) {
     	comm = new Communication(host, port);
     }
+    
     public void connectTo(String host, String port) {
     	comm = new Communication(host, Integer.parseInt(port));
     }
-	public static void sentToServer(Object obj) {
-		comm.getChannel().writeAndFlush(obj);
+    
+	public void sentToServer(Object obj) {
+		if (comm.isConnected()) {
+			comm.getChannel().writeAndFlush(obj);
+		}
+	}
+	
+	public void receiveAction(Object obj) {
+		
 	}
 }
