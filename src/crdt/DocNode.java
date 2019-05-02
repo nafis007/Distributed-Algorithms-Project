@@ -33,6 +33,8 @@ public class DocNode implements INode {
         return rightChild;
     }
 
+
+
     @Override
     public void setRightChild(INode node) {
         this.rightChild = (DocNode)node;
@@ -42,12 +44,23 @@ public class DocNode implements INode {
     @Override
     public void setParent(INode node) {
         this.parent = (DocNode) node;
-        element.setPath(getPathToRoot());
+        if (element != null) {
+            element.setPath(getPathToRoot());
+        }
     }
 
     @Override
     public IElement getElement() {
         return element;
+    }
+
+    @Override
+    public void setElement(IElement element) {
+        if (element == null) {
+            throw new IllegalArgumentException();
+        }
+        this.element = (DocElement) element;
+        this.element.setPath(getPathToRoot());
     }
 
     private TreePath getPathToRoot() {
